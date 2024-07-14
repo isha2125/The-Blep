@@ -72,27 +72,36 @@ class _MovingCharacterState extends State<MovingCharacter> {
   void _moveCharacter() {
     // Move character based on current direction index
     final size = MediaQuery.of(context).size;
-    final characterSize = 50.0;
+    final characterSize = 100;
     final bottomNavBarHeight = kBottomNavigationBarHeight;
 
-    _xPosition += _directions[_directionIndex].dx;
-    _yPosition += _directions[_directionIndex].dy;
+    // Calculate new position
+    double newXPosition = _xPosition + _directions[_directionIndex].dx;
+    double newYPosition = _yPosition + _directions[_directionIndex].dy;
 
-    // Handle screen boundaries to prevent character from going off-screen
-    if (_xPosition >= size.width - characterSize && _directionIndex == 0) {
-      _xPosition = size.width - characterSize;
-      _directionIndex = 1;
-    } else if (_yPosition <= 0 && _directionIndex == 1) {
-      _yPosition = 0;
-      _directionIndex = 2;
-    } else if (_xPosition <= 0 && _directionIndex == 2) {
-      _xPosition = 0;
-      _directionIndex = 3;
-    } else if (_yPosition >= size.height - characterSize - bottomNavBarHeight &&
-        _directionIndex == 3) {
-      _yPosition = size.height - characterSize - bottomNavBarHeight;
-      _directionIndex = 0;
+    // Clamp new position within screen boundaries
+    if (newXPosition < 0) {
+      newXPosition = 0;
+      _directionIndex = (_directionIndex + 1) % _directions.length;
+    } else if (newXPosition > size.width - characterSize) {
+      newXPosition = size.width - characterSize;
+      _directionIndex = (_directionIndex + 1) % _directions.length;
     }
+
+    if (newYPosition < 0) {
+      newYPosition = 0;
+      _directionIndex = (_directionIndex + 1) % _directions.length;
+    } else if (newYPosition >
+        size.height - characterSize - bottomNavBarHeight) {
+      newYPosition = size.height - characterSize - bottomNavBarHeight;
+      _directionIndex = (_directionIndex + 1) % _directions.length;
+    }
+
+    // Update position
+    setState(() {
+      _xPosition = newXPosition;
+      _yPosition = newYPosition;
+    });
   }
 
   void _pauseMovement() {
@@ -135,19 +144,9 @@ class _MovingCharacterState extends State<MovingCharacter> {
             duration: Duration(milliseconds: 500),
             left: _xPosition,
             top: _yPosition,
-            child: Container(
-              width: 50.0,
-              height: 50.0,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(25.0),
-              ),
-              child: Center(
-                child: Text(
-                  '🐾',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
+            child: Image.asset(
+              'assets/pet.png',
+              fit: BoxFit.cover, // Use BoxFit.cover to fill the container
             ),
           ),
           if (_showTextBubble) // Show text bubble if _showTextBubble is true
