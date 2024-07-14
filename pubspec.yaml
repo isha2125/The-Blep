@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   flutter_animate: ^4.5.0
   gesture_x_detector: ^1.1.1
+  firebase_core: ^3.2.0
 
 dev_dependencies:
   flutter_test:

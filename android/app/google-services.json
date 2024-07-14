@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "400570099350",
+    "project_id": "myntra-prototype",
+    "storage_bucket": "myntra-prototype.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400570099350:android:ada7336ff691e1cf5ac4b7",
+        "android_client_info": {
+          "package_name": "com.example.myntra_hackathon_prototype"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0fPNFaDWG80AXrYfhb1ddh0p5i4AnnrY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
