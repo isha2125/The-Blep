@@ -1,7 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../components/product_card.dart';
 import 'search_screen.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<String> productIds = [];
+  bool isLoading = true;
+  bool isError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProductIds();
+  }
+
+  Future<void> fetchProductIds() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('Products').get();
+      productIds = querySnapshot.docs.map((doc) => doc.id).toList();
+      print('Fetched product IDs: $productIds');
+      setState(() {
+        isLoading = false;
+        isError = false;
+      });
+    } catch (e) {
+      print('Error fetching product IDs: $e');
+      setState(() {
+        isLoading = false;
+        isError = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,41 +64,26 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          SearchBar(),
-          CategoryButtons(),
-          PromotionalBanner(),
-        ],
-      ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   selectedItemColor: Colors.pink,
-      //   unselectedItemColor: Colors.black,
-      //   currentIndex: 0,
-      //   onTap: (int index) {},
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.new_releases),
-      //       label: 'New',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.store),
-      //       label: 'Stores',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.trending_up),
-      //       label: 'TrendNxt',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.person),
-      //       label: 'Profile',
-      //     ),
-      //   ],
-      // ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : isError
+              ? Center(child: Text('Failed to load products'))
+              : ListView(
+                  children: [
+                    SearchBar(),
+                    CategoryButtons(),
+                    PromotionalBanner(),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'WESTERN WEAR',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ProductGrid(productIds: productIds),
+                  ],
+                ),
     );
   }
 }
@@ -168,6 +189,29 @@ class PromotionalBanner extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ProductGrid extends StatelessWidget {
+  final List<String> productIds;
+
+  ProductGrid({required this.productIds});
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      physics:
+          NeverScrollableScrollPhysics(), // Disable GridView's own scrolling
+      shrinkWrap: true, // Ensure GridView takes up only necessary space
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.75,
+      ),
+      itemCount: productIds.length,
+      itemBuilder: (context, index) {
+        return ProductCard(productId: productIds[index]);
+      },
     );
   }
 }
