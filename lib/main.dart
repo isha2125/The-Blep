@@ -7,6 +7,7 @@ import 'screens/new_page.dart';
 import 'screens/profile_page.dart';
 import 'screens/stores_page.dart';
 import 'screens/trendnxt_page.dart';
+import 'service/product.dart';
 import 'service/slang.dart';
 
 void main() async {
@@ -14,7 +15,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   await SlangProvider().fetchSlangs();
+  await ProductProvider.fetchProductIds();
+
   runApp(MyApp());
 }
 

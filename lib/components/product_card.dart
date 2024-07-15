@@ -29,7 +29,7 @@ class ProductCard extends StatelessWidget {
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               double cardHeight = constraints.maxHeight;
-              double imageHeight = cardHeight * 0.55;
+              double imageHeight = cardHeight * 0.48;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
