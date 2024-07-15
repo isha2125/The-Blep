@@ -7,12 +7,14 @@ import 'screens/new_page.dart';
 import 'screens/profile_page.dart';
 import 'screens/stores_page.dart';
 import 'screens/trendnxt_page.dart';
+import 'service/slang.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await SlangProvider().fetchSlangs();
   runApp(MyApp());
 }
 

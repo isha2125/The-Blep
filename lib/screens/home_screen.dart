@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                     CategoryButtons(),
                     PromotionalBanner(),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Text(
                         'WESTERN WEAR',
                         style: TextStyle(
@@ -82,6 +82,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     ProductGrid(productIds: productIds),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                          child: Text("Made with ♥️ By Team Obsession.")),
+                    )
                   ],
                 ),
     );
@@ -130,7 +135,6 @@ class CategoryButtons extends StatelessWidget {
             CategoryButton(label: 'Fashion'),
             CategoryButton(label: 'Beauty'),
             CategoryButton(label: 'Home'),
-            CategoryButton(label: 'Rakhi Gifting'),
             CategoryButton(label: 'Men'),
             CategoryButton(label: 'Women'),
             CategoryButton(label: 'Kids'),
@@ -167,28 +171,28 @@ class PromotionalBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: 100,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/sale_banner.jpg'),
-          fit: BoxFit.cover,
+          image: AssetImage('assets/banner.png'),
+          fit: BoxFit.contain,
         ),
       ),
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'SUPER SAVER SALE\n50-80% OFF\nDeals Too Good To Miss',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+      // child: Align(
+      //   alignment: Alignment.bottomCenter,
+      //   child: Padding(
+      //     padding: const EdgeInsets.all(8.0),
+      //     child: Text(
+      //       'SUPER SAVER SALE\n50-80% OFF\nDeals Too Good To Miss',
+      //       style: TextStyle(
+      //         color: Colors.white,
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 16,
+      //       ),
+      //       textAlign: TextAlign.center,
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
@@ -210,7 +214,10 @@ class ProductGrid extends StatelessWidget {
       ),
       itemCount: productIds.length,
       itemBuilder: (context, index) {
-        return ProductCard(productId: productIds[index]);
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ProductCard(productId: productIds[index]),
+        );
       },
     );
   }

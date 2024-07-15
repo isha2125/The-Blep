@@ -26,49 +26,56 @@ class ProductCard extends StatelessWidget {
 
         return Card(
           margin: EdgeInsets.all(8.0),
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(4.0)),
-                  child: Image.network(
-                    product['imageURL'],
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: 123, // Fixed height for the image container
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              double cardHeight = constraints.maxHeight;
+              double imageHeight = cardHeight * 0.55;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(4.0)),
+                    child: Image.network(
+                      product['imageURL'],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: imageHeight,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 8, 5, 0),
-                  child: Text(
-                    product['name'],
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product['name'],
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          product['desc'],
+                          maxLines: 2, // Adjust the number of lines as needed
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          '₹${product['price']}',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
-                  child: Text(
-                    product['desc'],
-                    maxLines: 2, // Adjust the number of lines as needed
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
-                  child: Text(
-                    '₹${product['price']}',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0),
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
+                ],
+              );
+            },
           ),
         );
       },
